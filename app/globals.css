@@ -892,6 +892,46 @@ a {
 .learn-list b {
   color: var(--color-accent);
 }
+.wireframe-maker-link {
+  align-items: end;
+  border-top: var(--border);
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-top: 48px;
+  padding-top: 32px;
+}
+.wireframe-maker-link p {
+  color: var(--color-accent);
+  font: 700 12px var(--font-en);
+  letter-spacing: 0.14em;
+  margin: 0 0 8px;
+}
+.wireframe-maker-link h3 {
+  color: var(--color-primary);
+  font-size: 22px;
+  margin: 0 0 10px;
+}
+.wireframe-maker-link span {
+  color: var(--color-text-secondary);
+  display: block;
+  font-size: 14px;
+  line-height: 1.8;
+  max-width: 680px;
+}
+.wireframe-maker-link a {
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.wireframe-maker-link a:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 .detail-section {
   background: var(--color-primary-soft);
 }
@@ -1592,6 +1632,19 @@ a {
   }
   .learn-list strong {
     font-size: 16px;
+  }
+  .wireframe-maker-link {
+    align-items: start;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    margin-top: 36px;
+    padding-top: 28px;
+  }
+  .wireframe-maker-link h3 {
+    font-size: 20px;
+  }
+  .wireframe-maker-link a {
+    white-space: normal;
   }
   .detail-heading {
     flex-direction: column;

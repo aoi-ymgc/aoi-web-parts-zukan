@@ -2500,6 +2500,27 @@ export default function Home() {
                 );
               })}
             </ol>
+            <aside
+              className="wireframe-maker-link"
+              aria-labelledby="wireframe-maker-heading"
+            >
+              <div>
+                <p>NEXT STEP</p>
+                <h3 id="wireframe-maker-heading">
+                  次はページ全体の構成を考えてみる
+                </h3>
+                <span>
+                  UIパーツの名前と役割を覚えたら、セクションを組み合わせてWebページの構成を考えてみましょう。構成が決まったら、Figmaで見た目を仕上げられます。
+                </span>
+              </div>
+              <a
+                href="https://aoi-web-wireframe.aoiroymgc.workers.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Webワイヤーフレームメーカーを使う →
+              </a>
+            </aside>
           </div>
         </section>
         <section id="parts" className="section soft-section">
