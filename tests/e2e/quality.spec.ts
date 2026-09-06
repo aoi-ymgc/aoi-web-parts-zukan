@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { openPart, waitForApp } from "../helpers/page";
 
+const publicOrigin = "https://aoi-web-parts-zukan.aoiroymgc.workers.dev";
+const publicUrl = `${publicOrigin}/`;
+const publicTitle = "Webパーツ図鑑｜見て、触って、名前を知る";
+
 test("通常操作でConsole Error・HTTP失敗・未公開Portfolio導線を残さない", async ({
   page,
 }) => {
@@ -95,4 +99,71 @@ test("代表的な詳細ページではパーツ名に応じてタイトルを�
     await openPart(page, slug);
     await expect(page).toHaveTitle(title);
   }
+});
+
+test("公開用meta・OGP・favicon・robots・sitemapが揃っている", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/");
+  await waitForApp(page);
+
+  await expect(page).toHaveTitle(publicTitle);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    publicOrigin,
+  );
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    publicTitle,
+  );
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute(
+    "content",
+    "website",
+  );
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    "content",
+    publicOrigin,
+  );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    `${publicUrl}ogp.png`,
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    "content",
+    "1200",
+  );
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+    "content",
+    "630",
+  );
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary_large_image",
+  );
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+    "href",
+    "/favicon.svg",
+  );
+
+  const [favicon, ogp, robots, sitemap] = await Promise.all([
+    request.get("/favicon.svg"),
+    request.get("/ogp.png"),
+    request.get("/robots.txt"),
+    request.get("/sitemap.xml"),
+  ]);
+  expect(favicon.ok()).toBe(true);
+  expect(favicon.headers()["content-type"]).toContain("image/svg+xml");
+  expect(ogp.ok()).toBe(true);
+  expect(ogp.headers()["content-type"]).toContain("image/png");
+  const png = await ogp.body();
+  expect(png.subarray(1, 4).toString("ascii")).toBe("PNG");
+  expect(png.readUInt32BE(16)).toBe(1200);
+  expect(png.readUInt32BE(20)).toBe(630);
+  expect(await robots.text()).toContain(`Sitemap: ${publicUrl}sitemap.xml`);
+  const sitemapXml = await sitemap.text();
+  expect(sitemap.ok()).toBe(true);
+  expect(sitemap.headers()["content-type"]).toMatch(/xml/);
+  expect(sitemapXml).toContain(`<loc>${publicUrl}</loc>`);
+  expect(sitemapXml).not.toContain("#");
 });

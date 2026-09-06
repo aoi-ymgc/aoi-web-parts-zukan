@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aoi-web-parts-zukan.aoiroymgc.workers.dev/sitemap.xml
